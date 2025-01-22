@@ -18,16 +18,19 @@
   }
   
   .button.small {
+    font-family: 'Pretendard';
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
   }
   
   .button.medium {
+    font-family: 'Pretendard';
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
   }
   
   .button.large {
+    font-family: 'Pretendard';
     padding: 1rem 2rem;
     font-size: 1.125rem;
   }
