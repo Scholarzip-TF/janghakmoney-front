@@ -1,0 +1,46 @@
+.button {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  
+  .button.primary {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .button.secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+  
+  .button.small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .button.medium {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .button.large {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+  }
+  
+  .button.full-width {
+    width: 100%;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  
+  .button:active {
+    transform: translateY(0);
+  }
