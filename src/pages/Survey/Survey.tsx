@@ -1,4 +1,3 @@
-import React from 'react';
 import './Survey.css';
 
 export const Survey = () => {

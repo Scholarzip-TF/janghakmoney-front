@@ -1,4 +1,5 @@
-import create from 'zustand';
+import { create } from 'zustand';
+
 
 interface SurveyState {
   // 설문 응답 데이터
