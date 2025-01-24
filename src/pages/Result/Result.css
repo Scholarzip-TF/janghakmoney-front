@@ -1,0 +1,136 @@
+.result-page {
+    padding: 80px 20px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .scholarship-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .scholarship-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s;
+   }
+   
+   .scholarship-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+   }
+  
+  .scholarship-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .scholarship-info {
+    margin-top: 16px;
+   }
+
+   .info-row {
+    display: flex;
+    margin-bottom: 8px;
+    line-height: 1.5;
+   }
+  
+   .label {
+    width: 120px;
+    color: var(--gray-500);
+    flex-shrink: 0;
+   }
+
+   .status {
+    display: inline-block;
+    color: var(--primary-color);
+    background: #fff8f3;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+   }
+
+   .modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal-header {
+    padding: 10px;
+    text-align: right;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .modal-content {
+    padding: 0 20px 20px;
+  }
+
+
+  .scholarship-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .scholarship-detail .detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .scholarship-detail .detail-row:last-child {
+    border-bottom: none;
+  }
+  
+  .scholarship-detail .label {
+    color: var(--gray-500);
+    width: 100%;
+  }
+
+  .info-row a {
+    color: #0066cc;
+    text-decoration: none;
+   }
+  
+   .info-row a:hover {
+    text-decoration: underline;
+   }
+
+  @media (max-width: 768px) {
+    .result-page {
+      padding: 80px 16px 16px;
+    }
+  }
