@@ -12,5 +12,4 @@ export interface Location {
       sido: "경기도",
       sigungu: ["고양시", "과천시", "광명시", "광주시", "구리시", /* ... */]
     },
-    // ... 다른 시도
   ];

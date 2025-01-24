@@ -1,4 +1,3 @@
-// src/data/universities.ts
 export const universities = [
     "가톨릭대학교",
     "가천대학교",
