@@ -155,21 +155,18 @@ export const Survey = () => {
                <h2>소득분위를 선택해주세요</h2>
                <p className="description">한국장학재단 소득분위 기준입니다</p>
                <div className="radio-group">
-                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
-                   <label key={level} className="radio-button">
-                     <input
-                       type="radio"
-                       name="incomeLevel"
-                       value={level}
-                       checked={formData.incomeLevel === level}
-                       onChange={(e) => setFormData({
-                         ...formData,
-                         incomeLevel: parseInt(e.target.value)
-                       })}
-                     />
-                     <span>{level}분위</span>
-                   </label>
-                 ))}
+               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
+                <div 
+                  key={level} 
+                  className={`radio-button ${formData.incomeLevel === level ? 'selected' : ''}`}
+                  onClick={() => setFormData({
+                    ...formData,
+                    incomeLevel: level
+                  })}
+                >
+                  {level}분위
+                </div>
+              ))}
                </div>
              </>
            )}
@@ -212,35 +209,35 @@ export const Survey = () => {
                <h2>장학금 수혜 여부를 선택해주세요</h2>
                <p className="description">현재 받고 계신 장학금을 선택해주세요</p>
                <div className="checkbox-container">
-                 <div className="checkbox-option">
-                   <input
-                     type="checkbox"
-                     checked={formData.scholarships.tuitionFull}
-                     onChange={(e) => setFormData({
-                       ...formData,
-                       scholarships: {
-                         ...formData.scholarships,
-                         tuitionFull: e.target.checked
-                       }
-                     })}
-                   />
-                   <span>전액 장학금을 받아 등록금을 내지 않으시나요?</span>
-                 </div>
-                 <div className="checkbox-option">
-                   <input
-                     type="checkbox"
-                     checked={formData.scholarships.livingExpenses}
-                     onChange={(e) => setFormData({
-                       ...formData,
-                       scholarships: {
-                         ...formData.scholarships,
-                         livingExpenses: e.target.checked
-                       }
-                     })}
-                   />
-                   <span>등록금성 장학금 외 생활비 장학금을 수혜중이신가요?</span>
-                 </div>
-               </div>
+                <label className="checkbox-option">
+                  <input
+                    type="checkbox"
+                    checked={formData.scholarships.tuitionFull}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      scholarships: {
+                        ...formData.scholarships,
+                        tuitionFull: e.target.checked
+                      }
+                    })}
+                  />
+                  <span>전액 장학금을 받아 등록금을 내지 않으시나요?</span>
+                </label>
+                <label className="checkbox-option">
+                  <input
+                    type="checkbox"
+                    checked={formData.scholarships.livingExpenses}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      scholarships: {
+                        ...formData.scholarships,
+                        livingExpenses: e.target.checked
+                      }
+                    })}
+                  />
+                  <span>등록금성 장학금 외 생활비 장학금을 수혜중이신가요?</span>
+                </label>
+              </div>
              </>
            )}
 
