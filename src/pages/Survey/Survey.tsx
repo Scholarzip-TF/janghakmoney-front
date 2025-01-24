@@ -1,120 +1,300 @@
-import { useState } from 'react';
+// src/pages/Survey/Survey.tsx
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header/Header';
+import { locations } from '../../data/locations';
+import { universities } from '../../data/universities';
+import { SurveyForm, Step } from '../../types/form';
 import './Survey.css';
 
 export const Survey = () => {
-  const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
+ const navigate = useNavigate();
+ const [currentStep, setCurrentStep] = useState<Step>(1);
+ const [searchValue, setSearchValue] = useState('');
+ const [showAutocomplete, setShowAutocomplete] = useState(false);
+ const [filteredUniversities, setFilteredUniversities] = useState<string[]>([]);
 
-  const handleNext = () => {
-    if (currentStep < 5) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      navigate('/result');
-    }
-  };
+ const [formData, setFormData] = useState<SurveyForm>({
+   region: {
+     sido: '',
+     sigungu: ''
+   },
+   incomeLevel: null,
+   university: '',
+   otherUniversity: '',
+   scholarships: {
+     tuitionFull: false,
+     livingExpenses: false
+   },
+   phoneNumber: '',
+   agreement: false
+ });
 
-  return (
-    <>
-      <Header />
-      <div className="survey-page">
-        <div className="survey-container">
-          <div className="progress-bar">
-            {[1, 2, 3, 4, 5].map((step) => (
-              <div 
-                key={step} 
-                className={`progress-dot ${step <= currentStep ? 'active' : ''}`} 
-              />
-            ))}
-          </div>
+ useEffect(() => {
+   if (searchValue) {
+     const filtered = universities.filter(uni => 
+       uni.toLowerCase().includes(searchValue.toLowerCase())
+     );
+     setFilteredUniversities(filtered);
+     setShowAutocomplete(true);
+   } else {
+     setShowAutocomplete(false);
+   }
+ }, [searchValue]);
 
-          <div className="survey-content">
-            {currentStep === 1 && (
-              <>
-                <h2>거주하시는 지역을 선택해주세요</h2>
-                <div className="options-container">
-                  <button className="option-button">서울특별시</button>
-                  <button className="option-button">경기도</button>
-                  <button className="option-button">인천광역시</button>
-                  <button className="option-button">부산광역시</button>
-                  <button className="option-button">기타 지역</button>
-                </div>
-              </>
-            )}
+ const formatPhoneNumber = (value: string) => {
+   const numbers = value.replace(/[^\d]/g, '');
+   if (numbers.length > 11) return numbers.slice(0, 11);
+   return numbers;
+ };
 
-            {currentStep === 2 && (
-              <>
-                <h2>소득분위를 선택해주세요</h2>
-                <div className="options-container">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
-                    <button key={level} className="option-button">
-                      {level}분위
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
+ const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const formatted = formatPhoneNumber(e.target.value);
+   setFormData({ ...formData, phoneNumber: formatted });
+ };
 
-            {currentStep === 3 && (
-              <>
-                <h2>소속 대학을 선택해주세요</h2>
-                <div className="search-container">
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="대학명을 입력하세요"
-                  />
-                </div>
-              </>
-            )}
+ const handleNext = () => {
+   if (!isCurrentStepValid()) return;
+   
+   if (currentStep < 5) {
+     setCurrentStep(prev => (prev + 1) as Step);
+   } else {
+     // TODO: API 호출
+     navigate('/result');
+   }
+ };
 
-            {currentStep === 4 && (
-              <>
-                <h2>현재 받고 계신 장학금을 선택해주세요</h2>
-                <div className="options-container vertical">
-                  <label className="checkbox-option">
-                    <input type="checkbox" />
-                    <span>등록금 장학금 전액 수혜 중</span>
-                  </label>
-                  <label className="checkbox-option">
-                    <input type="checkbox" />
-                    <span>생활비 장학금 수혜 중</span>
-                  </label>
-                </div>
-              </>
-            )}
+ const handleBack = () => {
+   if (currentStep > 1) {
+     setCurrentStep(prev => (prev - 1) as Step);
+   }
+ };
 
-            {currentStep === 5 && (
-              <>
-                <h2>전화번호를 입력해주세요</h2>
-                <div className="input-container">
-                  <input
-                    type="tel"
-                    className="phone-input"
-                    placeholder="'-' 없이 입력해주세요"
-                  />
-                  <label className="checkbox-option">
-                    <input type="checkbox" />
-                    <span>개인정보 수집 및 이용에 동의합니다</span>
-                  </label>
-                </div>
-              </>
-            )}
-          </div>
+ const isCurrentStepValid = (): boolean => {
+   switch(currentStep) {
+     case 1:
+       return formData.region.sido !== '' && formData.region.sigungu !== '';
+     case 2:
+       return formData.incomeLevel !== null;
+     case 3:
+       return formData.university !== '';
+     case 4:
+       return true;
+     case 5:
+       const phonePattern = /^010\d{8}$/;
+       return phonePattern.test(formData.phoneNumber) && formData.agreement;
+     default:
+       return false;
+   }
+ };
 
-          <div className="button-container">
-            <Button 
-              size="large" 
-              onClick={handleNext}
-              fullWidth
-            >
-              {currentStep === 5 ? '완료' : '다음'}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+ return (
+   <>
+     <Header />
+     <div className="survey-page">
+       <div className="survey-container">
+         <div className="progress-bar">
+           {[1, 2, 3, 4, 5].map((step) => (
+             <div 
+               key={step} 
+               className={`progress-dot ${step <= currentStep ? 'active' : ''}`} 
+             />
+           ))}
+         </div>
+
+         <div className="survey-content">
+           {currentStep === 1 && (
+             <>
+               <h2>거주하시는 지역을 선택해주세요</h2>
+               <p className="description">장학금 지원 가능 지역을 확인하기 위해 필요합니다</p>
+               <div className="select-group">
+                 <select 
+                   value={formData.region.sido}
+                   onChange={(e) => {
+                     setFormData({
+                       ...formData,
+                       region: { sido: e.target.value, sigungu: '' }
+                     });
+                   }}
+                   className="select-field"
+                 >
+                   <option value="">시/도 선택</option>
+                   {locations.map(location => (
+                     <option key={location.sido} value={location.sido}>
+                       {location.sido}
+                     </option>
+                   ))}
+                 </select>
+                 
+                 <select
+                   value={formData.region.sigungu}
+                   onChange={(e) => {
+                     setFormData({
+                       ...formData,
+                       region: { ...formData.region, sigungu: e.target.value }
+                     });
+                   }}
+                   className="select-field"
+                   disabled={!formData.region.sido}
+                 >
+                   <option value="">시/군/구 선택</option>
+                   {formData.region.sido && locations
+                     .find(loc => loc.sido === formData.region.sido)
+                     ?.sigungu.map(sigungu => (
+                       <option key={sigungu} value={sigungu}>
+                         {sigungu}
+                       </option>
+                     ))}
+                 </select>
+               </div>
+             </>
+           )}
+
+           {currentStep === 2 && (
+             <>
+               <h2>소득분위를 선택해주세요</h2>
+               <p className="description">한국장학재단 소득분위 기준입니다</p>
+               <div className="radio-group">
+                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
+                   <label key={level} className="radio-button">
+                     <input
+                       type="radio"
+                       name="incomeLevel"
+                       value={level}
+                       checked={formData.incomeLevel === level}
+                       onChange={(e) => setFormData({
+                         ...formData,
+                         incomeLevel: parseInt(e.target.value)
+                       })}
+                     />
+                     <span>{level}분위</span>
+                   </label>
+                 ))}
+               </div>
+             </>
+           )}
+
+           {currentStep === 3 && (
+             <>
+               <h2>소속 대학을 선택해주세요</h2>
+               <p className="description">현재 재학/휴학 중인 대학을 선택해주세요</p>
+               <div className="search-container">
+                 <input
+                   type="text"
+                   className="search-input"
+                   placeholder="대학명을 입력하세요"
+                   value={searchValue}
+                   onChange={(e) => setSearchValue(e.target.value)}
+                 />
+                 {showAutocomplete && (
+                   <div className="autocomplete-list">
+                     {filteredUniversities.map((uni) => (
+                       <div
+                         key={uni}
+                         className="autocomplete-item"
+                         onClick={() => {
+                           setFormData({ ...formData, university: uni });
+                           setSearchValue(uni);
+                           setShowAutocomplete(false);
+                         }}
+                       >
+                         {uni}
+                       </div>
+                     ))}
+                   </div>
+                 )}
+               </div>
+             </>
+           )}
+
+           {currentStep === 4 && (
+             <>
+               <h2>장학금 수혜 여부를 선택해주세요</h2>
+               <p className="description">현재 받고 계신 장학금을 선택해주세요</p>
+               <div className="checkbox-container">
+                 <div className="checkbox-option">
+                   <input
+                     type="checkbox"
+                     checked={formData.scholarships.tuitionFull}
+                     onChange={(e) => setFormData({
+                       ...formData,
+                       scholarships: {
+                         ...formData.scholarships,
+                         tuitionFull: e.target.checked
+                       }
+                     })}
+                   />
+                   <span>전액 장학금을 받아 등록금을 내지 않으시나요?</span>
+                 </div>
+                 <div className="checkbox-option">
+                   <input
+                     type="checkbox"
+                     checked={formData.scholarships.livingExpenses}
+                     onChange={(e) => setFormData({
+                       ...formData,
+                       scholarships: {
+                         ...formData.scholarships,
+                         livingExpenses: e.target.checked
+                       }
+                     })}
+                   />
+                   <span>등록금성 장학금 외 생활비 장학금을 수혜중이신가요?</span>
+                 </div>
+               </div>
+             </>
+           )}
+
+           {currentStep === 5 && (
+             <>
+               <h2>전화번호를 입력해주세요</h2>
+               <p className="description">장학금 정보를 받아보실 연락처를 입력해주세요</p>
+               <div className="input-container">
+                 <input
+                   type="tel"
+                   className="phone-input"
+                   placeholder="'-' 없이 입력해주세요"
+                   value={formData.phoneNumber}
+                   onChange={handlePhoneChange}
+                   maxLength={11}
+                 />
+                 <label className="checkbox-option">
+                   <input
+                     type="checkbox"
+                     checked={formData.agreement}
+                     onChange={(e) => setFormData({
+                       ...formData,
+                       agreement: e.target.checked
+                     })}
+                   />
+                   <span>개인정보 수집 및 이용에 동의합니다</span>
+                 </label>
+               </div>
+             </>
+           )}
+         </div>
+
+         <div className="button-container">
+           {currentStep > 1 && (
+             <Button 
+               variant="secondary"
+               size="large"
+               onClick={handleBack}
+             >
+               이전
+             </Button>
+           )}
+           <Button 
+             size="large" 
+             onClick={handleNext}
+             disabled={!isCurrentStepValid()}
+             fullWidth={currentStep === 1}
+           >
+             {currentStep === 5 ? '완료' : '다음'}
+           </Button>
+         </div>
+       </div>
+     </div>
+   </>
+ );
 };
