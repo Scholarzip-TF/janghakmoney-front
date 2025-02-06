@@ -74,7 +74,7 @@ export const Survey = () => {
           hasFullTuitionScholarship: formData.scholarships.tuitionFull,
         };
 
-        await createUser(API_BASE_URL, requestData); // API URL을 동적으로 전달
+        await createUser(requestData); // API URL을 동적으로 전달
         navigate('/result');
       } catch (error) {
         console.error('Failed to submit survey:', error);
