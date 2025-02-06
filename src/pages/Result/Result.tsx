@@ -19,7 +19,7 @@ export const Result = () => {
     setError(null);
     
     try {
-      const detail = await getScholarshipDetail(API_BASE_URL, scholarship.id);
+      const detail = await getScholarshipDetail(scholarship.id);
       setScholarshipDetail(detail);
     } catch (err) {
       setError('장학금 상세 정보를 불러오는데 실패했습니다.');
