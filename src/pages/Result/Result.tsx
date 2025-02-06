@@ -15,17 +15,19 @@ export const Result = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+
   useEffect(() => {
     const fetchPossibleScholarships = async () => {
       setIsLoading(true);
       try {
-        const userData = location.state;
-        console.log('User Data from location:', userData); // 디버깅용 로그 추가
-        
-        if (!userData) {
+        console.log('Location object:', location); // location 값 확인
+        if (!location.state) {
           setError('사용자 정보를 찾을 수 없습니다. 설문을 다시 진행해주세요.');
           return;
         }
+
+        const userData = location.state;
+        console.log('User Data from location:', userData); // 디버깅 로그
 
         const requestData = {
           regionId: userData.regionId,
@@ -36,12 +38,11 @@ export const Result = () => {
           phoneNumber: userData.phone,
         };
 
-        console.log('Request Data:', requestData); // 디버깅용 로그 추가
-
+        console.log('Request Data:', requestData);
         const scholarships = await getPossibleScholarships(requestData);
         setPossibleScholarships(scholarships);
       } catch (err) {
-        console.error('Error details:', err); // 디버깅용 로그 추가
+        console.error('Error details:', err);
         setError('지원 가능한 장학금 목록을 불러오는데 실패했습니다.');
       } finally {
         setIsLoading(false);
@@ -50,6 +51,7 @@ export const Result = () => {
 
     fetchPossibleScholarships();
   }, [location]);
+
 
   const handleScholarshipClick = async (scholarship: IScholarship) => {
     setSelectedScholarship(scholarship);
