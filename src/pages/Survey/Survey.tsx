@@ -5,64 +5,83 @@ import { Header } from '../../components/Header/Header';
 import { locations } from '../../data/locations';
 import { universities } from '../../data/universities';
 import { SurveyForm, Step } from '../../types/form';
+import { createUser } from '../../api/users';
 import './Survey.css';
 
 export const Survey = () => {
- const navigate = useNavigate();
- const [currentStep, setCurrentStep] = useState<Step>(1);
- const [searchValue, setSearchValue] = useState('');
- const [showAutocomplete, setShowAutocomplete] = useState(false);
- const [filteredUniversities, setFilteredUniversities] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState<Step>(1);
+  const [searchValue, setSearchValue] = useState('');
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [filteredUniversities, setFilteredUniversities] = useState<string[]>([]);
 
- const [formData, setFormData] = useState<SurveyForm>({
-   region: {
-     sido: '',
-     sigungu: ''
-   },
-   incomeLevel: null,
-   university: '',
-   otherUniversity: '',
-   scholarships: {
-     tuitionFull: false,
-     livingExpenses: false
-   },
-   phoneNumber: '',
-   agreement: false
- });
+  const [formData, setFormData] = useState<SurveyForm>({
+    region: {
+      sido: '',
+      sigungu: ''
+    },
+    incomeLevel: null,
+    university: '',
+    otherUniversity: '',
+    scholarships: {
+      tuitionFull: false,
+      livingExpenses: false
+    },
+    phoneNumber: '',
+    agreement: false
+  });
 
- useEffect(() => {
-   if (searchValue) {
-     const filtered = universities.filter(uni => 
-       uni.toLowerCase().includes(searchValue.toLowerCase())
-     );
-     setFilteredUniversities(filtered);
-     setShowAutocomplete(true);
-   } else {
-     setShowAutocomplete(false);
-   }
- }, [searchValue]);
+  useEffect(() => {
+    if (searchValue) {
+      const filtered = universities.filter(uni => 
+        uni.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredUniversities(filtered);
+      setShowAutocomplete(true);
+    } else {
+      setShowAutocomplete(false);
+    }
+  }, [searchValue]);
 
- const formatPhoneNumber = (value: string) => {
-   const numbers = value.replace(/[^\d]/g, '');
-   if (numbers.length > 11) return numbers.slice(0, 11);
-   return numbers;
- };
+  const formatPhoneNumber = (value: string) => {
+    const numbers = value.replace(/[^\d]/g, '');
+    if (numbers.length > 11) return numbers.slice(0, 11);
+    return numbers;
+  };
 
- const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-   const formatted = formatPhoneNumber(e.target.value);
-   setFormData({ ...formData, phoneNumber: formatted });
- };
 
- const handleNext = () => {
-   if (!isCurrentStepValid()) return;
-   
-   if (currentStep < 5) {
-     setCurrentStep(prev => (prev + 1) as Step);
-   } else {
-     // TODO: API 호출
-     navigate('/result');
-   }
- };
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormData({ ...formData, phoneNumber: formatted });
+  };
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 사용
+
+  const handleNext = async () => {
+    if (!isCurrentStepValid()) return;
+    
+    if (currentStep < 5) {
+      setCurrentStep(prev => (prev + 1) as Step);
+    } else {
+      try {
+        const requestData = {
+          phone: formData.phoneNumber,
+          universityName: formData.university,
+          majorRegionName: formData.region.sido,
+          minorRegionName: formData.region.sigungu,
+          incomeLevel: formData.incomeLevel!,
+          hasLivingExpenseScholarship: formData.scholarships.livingExpenses,
+          hasFullTuitionScholarship: formData.scholarships.tuitionFull,
+        };
+
+        await createUser(API_BASE_URL, requestData); // API URL을 동적으로 전달
+        navigate('/result');
+      } catch (error) {
+        console.error('Failed to submit survey:', error);
+      }
+    }
+  };
+
 
  const handleBack = () => {
    if (currentStep > 1) {
