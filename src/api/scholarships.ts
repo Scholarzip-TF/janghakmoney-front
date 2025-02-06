@@ -1,16 +1,48 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 사용
+// src/api/scholarships.ts
+import { ScholarshipDetail, PossibleScholarshipRequest, PossibleScholarshipResponse } from '../types/api';
 
-export const getScholarshipDetail = async (scholarshipId: number) => {
+export const getScholarshipDetail = async (scholarshipId: number): Promise<ScholarshipDetail> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/scholarships/${scholarshipId}`);
+    const response = await fetch(`/api/scholarships/${scholarshipId}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch scholarship detail");
+      const errorText = await response.text();
+      console.error('Error response:', errorText);
+      throw new Error('Failed to fetch scholarship detail');
     }
 
-    return await response.json();
+    return response.json();
   } catch (error) {
-    console.error("API 호출 오류:", error);
+    console.error('Failed to fetch scholarship:', error);
+    throw error;
+  }
+};
+
+export const getPossibleScholarships = async (data: PossibleScholarshipRequest): Promise<PossibleScholarshipResponse[]> => {
+  try {
+    const response = await fetch('/api/scholarships/possible', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error response:', errorText);
+      throw new Error('Failed to fetch possible scholarships');
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Failed to fetch possible scholarships:', error);
     throw error;
   }
 };

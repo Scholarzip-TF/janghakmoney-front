@@ -49,13 +49,10 @@ export const Survey = () => {
     return numbers;
   };
 
-
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
     setFormData({ ...formData, phoneNumber: formatted });
   };
-
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 사용
 
   const handleNext = async () => {
     if (!isCurrentStepValid()) return;
@@ -74,8 +71,19 @@ export const Survey = () => {
           hasFullTuitionScholarship: formData.scholarships.tuitionFull,
         };
 
-        await createUser(requestData); // API URL을 동적으로 전달
-        navigate('/result');
+        console.log('Create User Request:', requestData); // 디버깅용 로그 추가
+
+        const response = await createUser(requestData);
+        console.log('Create User Response:', response); // 디버깅용 로그 추가
+
+        navigate('/result', { 
+          state: {
+            ...response,
+            hasFullTuition: response.hasFullTuitionScholarship,
+            hasScholarship: response.hasLivingExpenseScholarship,
+            phoneNumber: response.phone
+          }
+        });
       } catch (error) {
         console.error('Failed to submit survey:', error);
       }
