@@ -35,7 +35,7 @@ export const getScholarshipDetail = async (scholarshipId: number) => {
 // 가능한 장학금 조회 (POST 요청)
 export const getPossibleScholarships = async (requestData: any) => {
   try {
-    const response = await fetch("/api/scholarships/possible", {
+    const response = await fetch(`${API_BASE_URL}/scholarships/possible`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestData),
