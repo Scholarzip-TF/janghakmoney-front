@@ -10,3 +10,6 @@
   to = "https://sprightly-beignet-c6e0be.netlify.app/:splat"
   status = 200
   force = true
+
+[build]
+publish = "dist"
