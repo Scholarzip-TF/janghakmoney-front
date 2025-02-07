@@ -19,7 +19,7 @@ export const getScholarships = async () => {
 // 특정 장학금 상세 정보 조회
 export const getScholarshipDetail = async (scholarshipId: number) => {
   try {
-    const response = await fetch(`api/scholarships/${scholarshipId}`);
+    const response = await fetch(`${API_BASE_URL}/api/scholarships/${scholarshipId}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch scholarship detail. Status: ${response.status}`);
