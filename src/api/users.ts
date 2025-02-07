@@ -1,8 +1,8 @@
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 사용
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 사용
 
 export const createUser = async (userData: any) => {
   try {
-    const response = await fetch("/api/users", {
+    const response = await fetch(`${API_BASE_URL}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),

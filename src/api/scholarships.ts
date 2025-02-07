@@ -1,9 +1,9 @@
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 적용
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경변수 적용
 
 // 장학금 목록 조회
 export const getScholarships = async () => {
   try {
-    const response = await fetch("/api/scholarships");
+    const response = await fetch(`${API_BASE_URL}/api/users`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch scholarships. Status: ${response.status}`);
@@ -19,7 +19,7 @@ export const getScholarships = async () => {
 // 특정 장학금 상세 정보 조회
 export const getScholarshipDetail = async (scholarshipId: number) => {
   try {
-    const response = await fetch("api/scholarships/${scholarshipId}");
+    const response = await fetch(`api/scholarships/${scholarshipId}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch scholarship detail. Status: ${response.status}`);
