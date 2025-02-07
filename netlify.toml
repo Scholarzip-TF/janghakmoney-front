@@ -4,12 +4,5 @@
   status = 200
   force = true
 
-# 2. Netlify 도메인에서 HTTP 요청을 그대로 처리(HTTPS 강제 리디렉션 해제)
-[[redirects]]
-  from = "https://sprightly-beignet-c6e0be.netlify.app/*"  # 여기에는 Netlify에 배포된 도메인을 입력합니다.
-  to = "https://sprightly-beignet-c6e0be.netlify.app/:splat"
-  status = 200
-  force = true
-
 [build]
-publish = "dist"
+publish = "dist"  # 빌드 폴더 확인 후 필요 시 "build"로 변경
