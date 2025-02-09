@@ -121,8 +121,8 @@ export const Result = () => {
                     <span>{scholarship.applicationStartDate} ~ {scholarship.applicationEndDate}</span>
                   </div>
                   <div className="info-row">
-                    <span className="label">유형</span>
-                    <span>{scholarship.type}</span>
+                    <span className="label">지원 유형</span>
+                    <span>{scholarship.type === 'TUITION' ? '등록금' : '생활비'}</span>
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export const Result = () => {
                   <span>{scholarshipDetail.organization}</span>
                 </div>
                 <div className="detail-row">
-                  <span className="label">설명</span>
+                  <span className="label">지원 내용</span>
                   <span>{scholarshipDetail.description}</span>
                 </div>
                 <div className="detail-row">
@@ -161,13 +161,12 @@ export const Result = () => {
                   </div>
                 )}
                 <div className="detail-row">
-                  <span className="label">장학금 유형</span>
-                  <span>{scholarshipDetail.type === 'TUITION' ? '등록금' : scholarshipDetail.type}</span>
+                  <span className="label">지원 유형</span>
+                  <span>{scholarshipDetail.type === 'TUITION' ? '등록금' : '생활비'}</span>
                 </div>
               </div>
             ) : null}
           </ModalPortal>
-          
         )}
       </div>
     </>
