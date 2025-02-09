@@ -52,51 +52,6 @@
     font-size: 0.875rem;
    }
 
-   .modal-content h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .modal {
-    background: white;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  
-  .modal-header {
-    padding: 10px;
-    text-align: right;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .modal-content {
-    padding: 0 20px 20px;
-  }
-
-
   .scholarship-detail {
     display: flex;
     flex-direction: column;
