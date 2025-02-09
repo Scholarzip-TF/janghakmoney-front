@@ -134,7 +134,7 @@ export const Result = () => {
         {selectedScholarship && (
           <ModalPortal onClose={handleCloseModal}>
             {detailLoading ? (
-              <div>로딩 중...</div>
+                null
             ) : detailError ? (
               <div className="error-message">{detailError}</div>
             ) : scholarshipDetail ? (
@@ -167,6 +167,7 @@ export const Result = () => {
               </div>
             ) : null}
           </ModalPortal>
+          
         )}
       </div>
     </>

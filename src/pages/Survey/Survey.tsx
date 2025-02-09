@@ -280,7 +280,6 @@ export const Survey = () => {
                     value={formData.phoneNumber}
                     onChange={handlePhoneChange}
                     maxLength={11}
-                    defaultValue="010"
                   />
                   <label className="checkbox-option">
                     <input
