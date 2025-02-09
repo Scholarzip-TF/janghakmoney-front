@@ -281,17 +281,30 @@ export const Survey = () => {
                     onChange={handlePhoneChange}
                     maxLength={11}
                   />
-                  <label className="checkbox-option">
-                    <input
+                <label className="checkbox-option tooltip">
+                  <input
                     type="checkbox"
                     checked={formData.agreement}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      agreement: e.target.checked
-                    })}
-                    />
-                    <span>개인정보 수집 및 이용에 동의합니다</span>
-                  </label>
+                    onChange={(e) =>
+                      setFormData({ ...formData, agreement: e.target.checked })
+                    }
+                  />
+                  <span>개인정보 수집 및 이용에 동의합니다</span>
+                  <span className="tooltiptext">
+                    <strong>개인정보 수집 및 이용 안내</strong>
+                    <br />
+                    1. 개인정보의 수집 이용 목적: 장학정보제공
+                    <br />
+                    2. 수집하는 개인정보의 항목: 휴대폰 번호
+                    <br />
+                    3. 개인정보의 보유 및 이용 기간: 개인정보의 수집·이용 목적 달성시까지, 또는 고객이 자신의 개인정보 제공 동의를 철회한 때.
+                    단, 관련 법령의 규정에 따라 보유할 필요가 있는 경우 해당 법령에서 정한 기간까지.
+                    <br />
+                    4. 본 이벤트 참여 고객은 개인정보 수집, 활용에 대해 동의를 거부할 권리가 있으며, 비동의 시 신청이 정상적으로 접수되지 않습니다.
+                    <br />
+                    동의하시는 경우, 체크박스를 클릭해주십시오.
+                  </span>
+                </label>
                  </div>
              </>
            )}
