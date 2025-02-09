@@ -234,7 +234,7 @@ export const Survey = () => {
            {currentStep === 4 && (
              <>
                <h2>장학금 수혜 여부를 선택해주세요</h2>
-               <p className="description">현재 받고 계신 장학금을 선택해주세요</p>
+               <p className="description">현재 기준으로 체크해주세요. 중복 체크 가능합니다.</p>
                <div className="checkbox-container">
                 <label className="checkbox-option">
                   <input
@@ -271,28 +271,29 @@ export const Survey = () => {
            {currentStep === 5 && (
              <>
                <h2>전화번호를 입력해주세요</h2>
-               <p className="description">장학금 정보를 받아보실 연락처를 입력해주세요</p>
-               <div className="input-container">
-                 <input
-                   type="tel"
-                   className="phone-input"
-                   placeholder="'-' 없이 입력해주세요"
-                   value={formData.phoneNumber}
-                   onChange={handlePhoneChange}
-                   maxLength={11}
-                 />
-                 <label className="checkbox-option">
-                   <input
-                     type="checkbox"
-                     checked={formData.agreement}
-                     onChange={(e) => setFormData({
-                       ...formData,
-                       agreement: e.target.checked
-                     })}
-                   />
-                   <span>개인정보 수집 및 이용에 동의합니다</span>
-                 </label>
-               </div>
+               <p className="description">추가로 장학정보를 받아보실 연락처를 입력해주세요</p>
+                 <div className="input-container">
+                  <input
+                    type="tel"
+                    className="phone-input"
+                    placeholder="'-' 없이 입력해주세요"
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    maxLength={11}
+                    defaultValue="010"
+                  />
+                  <label className="checkbox-option">
+                    <input
+                    type="checkbox"
+                    checked={formData.agreement}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      agreement: e.target.checked
+                    })}
+                    />
+                    <span>개인정보 수집 및 이용에 동의합니다</span>
+                  </label>
+                 </div>
              </>
            )}
          </div>
@@ -307,14 +308,19 @@ export const Survey = () => {
                이전
              </Button>
            )}
-           <Button 
+             <Button 
              size="large" 
-             onClick={handleNext}
-             disabled={!isCurrentStepValid()}
+             onClick={() => {
+               if (isCurrentStepValid()) {
+               handleNext();
+               } else {
+               alert('현재 단계의 모든 필드를 올바르게 입력해주세요.');
+               }
+             }}
              fullWidth={currentStep === 1}
-           >
+             >
              {currentStep === 5 ? '완료' : '다음'}
-           </Button>
+             </Button>
          </div>
        </div>
      </div>
