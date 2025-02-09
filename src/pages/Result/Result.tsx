@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Header } from '../../components/Header/Header';
 import './Result.css';
-import './src/components/Modal/Modal.css';
+import '../../components/Modal/Modal.css';
 import { IScholarship } from '../../data/scholarships';
 import { getScholarshipDetail, getPossibleScholarships } from '../../api/scholarships';
 import { ScholarshipDetail, PossibleScholarshipResponse } from '../../types/api';
